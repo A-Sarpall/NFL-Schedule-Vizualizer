@@ -52,7 +52,7 @@
     <script>
         async function loadGoogleMaps() {
             try {
-                const response = await fetch('/.netlify/functions/get-api-key');
+                const response = await fetch('/.netlify/functions/getapikey');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
