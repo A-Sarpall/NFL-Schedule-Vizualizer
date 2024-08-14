@@ -25,7 +25,7 @@ function createBearsFlightPath() {
   return new google.maps.Polyline({
     path: ChicagoCoordinates,
     geodesic: false,
-    strokeColor: "#b1063a",
+    strokeColor: "#df3f00",
     strokeOpacity: 1.0,
     strokeWeight: 2,
   });
