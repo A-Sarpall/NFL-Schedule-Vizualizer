@@ -51,17 +51,23 @@
 
     <script>
         async function loadGoogleMaps() {
-            // Fetch the API key from the Netlify function
-            const response = await fetch('/.netlify/functions/getapikey.js');
-            const data = await response.json();
-            // Create a script element for the Google Maps API
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${data.apiKey}&callback=initMap`;
-            script.defer = true;
-            document.head.appendChild(script);
+            try {
+                const response = await fetch('/.netlify/functions/get-api-key');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${data.apiKey}&callback=initMap`;
+                script.defer = true;
+                document.head.appendChild(script);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
         }
-
+        
         loadGoogleMaps();
+        
     </script>
     
 </body>
