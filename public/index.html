@@ -3,7 +3,9 @@
 <head>
     <title>NFL Schedule Visualizer</title>
     <link rel="stylesheet" href="main.css">
-    <script type="module"  src="map.js" defer></script>
+    <script type="module" src="map.js" defer></script>
+    <!-- Commented out the old script loading Google Maps -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIGk3VO9K19xgxwV38DdP5AeJrAklNeBc&loading=async&callback=initMap" defer></script> -->
 </head>
 <body>
     <h3>NFL Schedule Visualizer</h3>
@@ -49,8 +51,10 @@
 
     <script>
         async function loadGoogleMaps() {
-            const response = await fetch('/api-key');
+            // Fetch the API key from the Netlify function
+            const response = await fetch('/.netlify/functions/get-api-key.js');
             const data = await response.json();
+            // Create a script element for the Google Maps API
             const script = document.createElement('script');
             script.src = `https://maps.googleapis.com/maps/api/js?key=${data.apiKey}&callback=initMap`;
             script.defer = true;
