@@ -8,47 +8,58 @@
 <body>
     <h2>Gridiron Guide</h2>
     <h3>NFL Schedule Visualizer</h3>
-    <div>
-        <label for="team-select">Choose a team:</label>
-        <select id="team-select">
-            <option value="none">Select a team</option>
-            <option value="arizona">Arizona Cardinals</option>
-            <option value="atlanta">Atlanta Falcons</option>
-            <option value="baltimore">Baltimore Ravens</option>
-            <option value="buffalo">Buffalo Bills</option>
-            <option value="carolina">Carolina Panthers</option>
-            <option value="chicago">Chicago Bears</option>
-            <option value="cincinnati">Cincinnati Bengals</option>
-            <option value="cleveland">Cleveland Browns</option>
-            <option value="dallas">Dallas Cowboys</option>
-            <option value="denver">Denver Broncos</option>
-            <option value="detroit">Detroit Lions</option>
-            <option value="green bay">Green Bay Packers</option>
-            <option value="houston">Houston Texans</option>
-            <option value="indianapolis">Indianapolis Colts</option>
-            <option value="jacksonville">Jacksonville Jaguars</option>
-            <option value="kansas city">Kansas City Chiefs</option>
-            <option value="lac">Los Angeles Chargers</option>
-            <option value="lar">Los Angeles Rams</option>
-            <option value="las vegas">Las Vegas Raiders</option>
-            <option value="miami">Miami Dolphins</option>
-            <option value="minnesota">Minnesota Vikings</option>
-            <option value="new england">New England Patriots</option>
-            <option value="new orleans">New Orleans Saints</option>
-            <option value="nyg">New York Giants</option>
-            <option value="nyj">New York Jets</option>
-            <option value="philadelphia">Philadelphia Eagles</option>
-            <option value="pittsburgh">Pittsburgh Steelers</option>
-            <option value="seattle">Seattle Seahawks</option>
-            <option value="san francisco">San Francisco 49ers</option>
-            <option value="tampa bay">Tampa Bay Buccaneers</option>
-            <option value="tennessee">Tennessee Titans</option>
-            <option value="washington">Washington Commanders</option>
-        </select>
+    <div class="selector-container"></div>
+        <div>
+            <label for="team-select">Choose a team:</label>
+            <select id="team-select">
+                <option value="none">Select a team</option>
+                <option value="arizona">Arizona Cardinals</option>
+                <option value="atlanta">Atlanta Falcons</option>
+                <option value="baltimore">Baltimore Ravens</option>
+                <option value="buffalo">Buffalo Bills</option>
+                <option value="carolina">Carolina Panthers</option>
+                <option value="chicago">Chicago Bears</option>
+                <option value="cincinnati">Cincinnati Bengals</option>
+                <option value="cleveland">Cleveland Browns</option>
+                <option value="dallas">Dallas Cowboys</option>
+                <option value="denver">Denver Broncos</option>
+                <option value="detroit">Detroit Lions</option>
+                <option value="green bay">Green Bay Packers</option>
+                <option value="houston">Houston Texans</option>
+                <option value="indianapolis">Indianapolis Colts</option>
+                <option value="jacksonville">Jacksonville Jaguars</option>
+                <option value="kansas city">Kansas City Chiefs</option>
+                <option value="lac">Los Angeles Chargers</option>
+                <option value="lar">Los Angeles Rams</option>
+                <option value="las vegas">Las Vegas Raiders</option>
+                <option value="miami">Miami Dolphins</option>
+                <option value="minnesota">Minnesota Vikings</option>
+                <option value="new england">New England Patriots</option>
+                <option value="new orleans">New Orleans Saints</option>
+                <option value="nyg">New York Giants</option>
+                <option value="nyj">New York Jets</option>
+                <option value="philadelphia">Philadelphia Eagles</option>
+                <option value="pittsburgh">Pittsburgh Steelers</option>
+                <option value="seattle">Seattle Seahawks</option>
+                <option value="san francisco">San Francisco 49ers</option>
+                <option value="tampa bay">Tampa Bay Buccaneers</option>
+                <option value="tennessee">Tennessee Titans</option>
+                <option value="washington">Washington Commanders</option>
+            </select>
+        </div>
+        <!-- <div id="matchup">
+            <div class="square">
+                <img src="./images/packers.jpeg" alt="away team">
+            </div>
+            <h4>@</h4>
+            <div class="square">
+                <img src="./images/eagles.jpg" alt="home team">
+            </div>
+        </div> -->
     </div>
     <div id="map"></div>
 
-    <script>
+    <!-- <script>
         async function loadGoogleMaps() {
             try {
                 const response = await fetch('/.netlify/functions/getapikey');
@@ -67,7 +78,7 @@
         
         loadGoogleMaps();
         
-    </script>
+    </script> -->
     
 </body>
 </html>

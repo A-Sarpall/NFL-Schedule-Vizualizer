@@ -1,3 +1,34 @@
+
+
+.selector-container {
+    display: flex;
+    align-items: center; /* Ensures everything in the container is aligned horizontally */
+    gap: 20px; /* Adjust the gap between the selector and the squares/v */
+}
+
+#matchup {
+    display: flex;
+    align-items: center; /* Aligns the squares and "v" horizontally in the same line */
+    gap: 10px; /* Adjust the gap between the squares and "v" */
+}
+
+.square {
+    width: 100px;  /* Adjust the size of the squares as needed */
+    height: 100px;
+    background-color: #ccc; /* Background color (if the image is smaller or doesn't load) */
+    border: 2px solid #000; /* Optional: add a border */
+    overflow: hidden; /* Ensures that any part of the image that is too large is hidden */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire square without distortion */
+}
+
 #map {
     width: 100%;
     height: 700px;
