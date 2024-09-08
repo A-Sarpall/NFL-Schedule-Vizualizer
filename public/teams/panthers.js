@@ -1,5 +1,45 @@
 import stadiums from "../stadiums.js";
 
+// Map stadiums to their respective team logos
+const teamLogos = {
+  CAR: "./images/panthers.jpeg",
+  NO: "./images/saints.jpeg",
+  LAC: "./images/chargers.jpeg",
+  LV: "./images/raiders.jpeg",
+  CIN: "./images/bengals.jpeg",
+  CHI: "./images/bears.jpeg",
+  ATL: "./images/falcons.jpeg",
+  WSH: "./images/commanders.jpeg",
+  DEN: "./images/broncos.jpeg",
+  NYG: "./images/giants.jpeg",
+  KC: "./images/chiefs.jpeg",
+  TB: "./images/buccaneers.jpeg",
+  PHI: "./images/eagles.jpeg",
+  DAL: "./images/cowboys.jpeg",
+  ARI: "./images/cardinals.jpeg",
+};
+
+const schedule = [
+  { week: 1, home: "NO", away: "CAR" },
+  { week: 2, home: "CAR", away: "LAC" },
+  { week: 3, home: "LV", away: "CAR" },
+  { week: 4, home: "CAR", away: "CIN" },
+  { week: 5, home: "CHI", away: "CAR" },
+  { week: 6, home: "CAR", away: "ATL" },
+  { week: 7, home: "WSH", away: "CAR" },
+  { week: 8, home: "DEN", away: "CAR" },
+  { week: 9, home: "CAR", away: "NO" },
+  { week: 10, home: "CAR", away: "NYG" },
+  { week: 11, home: "CAR", away: "CAR" }, //BYE
+  { week: 12, home: "CAR", away: "KC" },
+  { week: 13, home: "CAR", away: "TB" },
+  { week: 14, home: "PHI", away: "CAR" },
+  { week: 15, home: "CAR", away: "DAL" },
+  { week: 16, home: "CAR", away: "ARI" },
+  { week: 17, home: "TB", away: "CAR" },
+  { week: 18, home: "ATL", away: "CAR" },
+];
+
 const CarolinaCoordinates = [
   stadiums.NO,
   stadiums.CAR,
@@ -31,14 +71,43 @@ function createPanthersFlightPath() {
   });
 }
 
+function updateTeamLogos(weekIndex) {
+  const homeImg = document.getElementById("home-team-img");
+  const awayImg = document.getElementById("away-team-img");
+
+  const currentMatch = schedule[weekIndex];
+  if (!currentMatch) {
+    console.error("No match found for this week");
+    return;
+  }
+
+  const homeTeam = currentMatch.home;
+  const awayTeam = currentMatch.away;
+
+  homeImg.src = teamLogos[homeTeam] || "./images/default_home.jpeg";
+  awayImg.src = teamLogos[awayTeam] || "./images/default_away.jpeg";
+
+  console.log(`Home Image Set To: ${homeImg.src}`);
+  console.log(`Away Image Set To: ${awayImg.src}`);
+}
+
+// Function to update the week display
+function updateWeek(weekIndex) {
+  const weekElement = document.querySelector(".week h2");
+  weekElement.textContent = `Week ${weekIndex + 1}`; // Weeks start from 1
+}
+
 // Function to animate the camera along the flight path
 function panthersCamera(map, index = 0) {
-  if (index >= CarolinaCoordinates.length - 1) return;
+  if (index >= CarolinaCoordinates.length) return;
 
   const start = CarolinaCoordinates[index];
   const end = CarolinaCoordinates[index + 1];
-  const totalSteps = 600; // Number of steps for the animation
+  const totalSteps = 300; // Number of steps for the animation
   const stepDuration = 1; // Time per step in milliseconds
+
+  updateTeamLogos(index);
+  updateWeek(index);
 
   let currentStep = 0;
 
@@ -46,7 +115,7 @@ function panthersCamera(map, index = 0) {
     if (currentStep >= totalSteps) {
       setTimeout(() => {
         panthersCamera(map, index + 1);
-      }, 500); // Wait before moving to the next point
+      }, 1000); // Wait before moving to the next point
       return;
     }
 

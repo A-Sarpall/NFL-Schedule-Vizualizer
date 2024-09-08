@@ -1,5 +1,45 @@
 import stadiums from "../stadiums.js";
 
+// Map stadiums to their respective team logos
+const teamLogos = {
+  SF: "./images/49ers.jpeg",
+  NYJ: "./images/jets.jpeg",
+  MIN: "./images/vikings.jpeg",
+  LAR: "./images/rams.jpeg",
+  NE: "./images/patriots.jpeg",
+  ARI: "./images/cardinals.jpeg",
+  SEA: "./images/seahawks.jpeg",
+  KC: "./images/chiefs.jpeg",
+  DAL: "./images/cowboys.jpeg",
+  TB: "./images/buccaneers.jpeg",
+  GB: "./images/packers.jpeg",
+  BUF: "./images/bills.jpeg",
+  CHI: "./images/bears.jpeg",
+  MIA: "./images/dolphins.jpeg",
+  DET: "./images/lions.jpeg",
+};
+
+const schedule = [
+  { week: 1, home: "SF", away: "NYJ" },
+  { week: 2, home: "MIN", away: "SF" },
+  { week: 3, home: "LAR", away: "SF" },
+  { week: 4, home: "SF", away: "NE" },
+  { week: 5, home: "SF", away: "ARI" },
+  { week: 6, home: "SEA", away: "SF" },
+  { week: 7, home: "SF", away: "KC" },
+  { week: 8, home: "SF", away: "DAL" },
+  { week: 9, home: "SF", away: "SF" }, //BYE
+  { week: 10, home: "TB", away: "SF" },
+  { week: 11, home: "SF", away: "SEA" },
+  { week: 12, home: "GB", away: "SF" },
+  { week: 13, home: "BUF", away: "SF" },
+  { week: 14, home: "SF", away: "CHI" },
+  { week: 15, home: "SF", away: "LAR" },
+  { week: 16, home: "MIA", away: "SF" },
+  { week: 17, home: "SF", away: "DET" },
+  { week: 18, home: "ARI", away: "SF" },
+];
+
 const SanFranciscoCoordinates = [
   stadiums.SF,
   stadiums.MIN,
@@ -31,14 +71,43 @@ function createSanFran49ersFlightPath() {
   });
 }
 
+function updateTeamLogos(weekIndex) {
+  const homeImg = document.getElementById("home-team-img");
+  const awayImg = document.getElementById("away-team-img");
+
+  const currentMatch = schedule[weekIndex];
+  if (!currentMatch) {
+    console.error("No match found for this week");
+    return;
+  }
+
+  const homeTeam = currentMatch.home;
+  const awayTeam = currentMatch.away;
+
+  homeImg.src = teamLogos[homeTeam] || "./images/default_home.jpeg";
+  awayImg.src = teamLogos[awayTeam] || "./images/default_away.jpeg";
+
+  console.log(`Home Image Set To: ${homeImg.src}`);
+  console.log(`Away Image Set To: ${awayImg.src}`);
+}
+
+// Function to update the week display
+function updateWeek(weekIndex) {
+  const weekElement = document.querySelector(".week h2");
+  weekElement.textContent = `Week ${weekIndex + 1}`; // Weeks start from 1
+}
+
 // Function to animate the camera along the flight path
 function sanfran49ersCamera(map, index = 0) {
-  if (index >= SanFranciscoCoordinates.length - 1) return;
+  if (index >= SanFranciscoCoordinates.length) return;
 
   const start = SanFranciscoCoordinates[index];
   const end = SanFranciscoCoordinates[index + 1];
-  const totalSteps = 600; // Number of steps for the animation
+  const totalSteps = 300; // Number of steps for the animation
   const stepDuration = 1; // Time per step in milliseconds
+
+  updateTeamLogos(index);
+  updateWeek(index);
 
   let currentStep = 0;
 
@@ -46,7 +115,7 @@ function sanfran49ersCamera(map, index = 0) {
     if (currentStep >= totalSteps) {
       setTimeout(() => {
         sanfran49ersCamera(map, index + 1);
-      }, 500); // Wait before moving to the next point
+      }, 1000); // Wait before moving to the next point
       return;
     }
 

@@ -1,5 +1,45 @@
 import stadiums from "../stadiums.js";
 
+// Map stadiums to their respective team logos
+const teamLogos = {
+  NO: "./images/saints.jpeg",
+  CAR: "./images/panthers.jpeg",
+  DAL: "./images/cowboys.jpeg",
+  PHI: "./images/eagles.jpeg",
+  ATL: "./images/falcons.jpeg",
+  KC: "./images/chiefs.jpeg",
+  TB: "./images/buccaneers.jpeg",
+  DEN: "./images/broncos.jpeg",
+  LAC: "./images/chargers.jpeg",
+  CLE: "./images/browns.jpeg",
+  LAR: "./images/rams.jpeg",
+  NYG: "./images/giants.jpeg",
+  WSH: "./images/commanders.jpeg",
+  GB: "./images/packers.jpeg",
+  LV: "./images/raiders.jpeg",
+};
+
+const schedule = [
+  { week: 1, home: "NO", away: "CAR" },
+  { week: 2, home: "DAL", away: "NO" },
+  { week: 3, home: "NO", away: "PHI" },
+  { week: 4, home: "ATL", away: "NO" },
+  { week: 5, home: "KC", away: "NO" },
+  { week: 6, home: "NO", away: "TB" },
+  { week: 7, home: "NO", away: "DEN" },
+  { week: 8, home: "LAC", away: "NO" },
+  { week: 9, home: "CAR", away: "NO" },
+  { week: 10, home: "NO", away: "ATL" },
+  { week: 11, home: "NO", away: "CLE" },
+  { week: 12, home: "NO", away: "NO" }, //BYE
+  { week: 13, home: "NO", away: "LAR" },
+  { week: 14, home: "NYG", away: "NO" },
+  { week: 15, home: "NO", away: "WSH" },
+  { week: 16, home: "GB", away: "NO" },
+  { week: 17, home: "NO", away: "LV" },
+  { week: 18, home: "TB", away: "NO" },
+];
+
 const NewOrleansCoordinates = [
   stadiums.NO,
   stadiums.DAL,
@@ -31,14 +71,43 @@ function createSaintsFlightPath() {
   });
 }
 
+function updateTeamLogos(weekIndex) {
+  const homeImg = document.getElementById("home-team-img");
+  const awayImg = document.getElementById("away-team-img");
+
+  const currentMatch = schedule[weekIndex];
+  if (!currentMatch) {
+    console.error("No match found for this week");
+    return;
+  }
+
+  const homeTeam = currentMatch.home;
+  const awayTeam = currentMatch.away;
+
+  homeImg.src = teamLogos[homeTeam] || "./images/default_home.jpeg";
+  awayImg.src = teamLogos[awayTeam] || "./images/default_away.jpeg";
+
+  console.log(`Home Image Set To: ${homeImg.src}`);
+  console.log(`Away Image Set To: ${awayImg.src}`);
+}
+
+// Function to update the week display
+function updateWeek(weekIndex) {
+  const weekElement = document.querySelector(".week h2");
+  weekElement.textContent = `Week ${weekIndex + 1}`; // Weeks start from 1
+}
+
 // Function to animate the camera along the flight path
 function saintsCamera(map, index = 0) {
-  if (index >= NewOrleansCoordinates.length - 1) return;
+  if (index >= NewOrleansCoordinates.length) return;
 
   const start = NewOrleansCoordinates[index];
   const end = NewOrleansCoordinates[index + 1];
-  const totalSteps = 600; // Number of steps for the animation
+  const totalSteps = 300; // Number of steps for the animation
   const stepDuration = 1; // Time per step in milliseconds
+
+  updateTeamLogos(index);
+  updateWeek(index);
 
   let currentStep = 0;
 
@@ -46,7 +115,7 @@ function saintsCamera(map, index = 0) {
     if (currentStep >= totalSteps) {
       setTimeout(() => {
         saintsCamera(map, index + 1);
-      }, 500); // Wait before moving to the next point
+      }, 1000); // Wait before moving to the next point
       return;
     }
 

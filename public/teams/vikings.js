@@ -1,5 +1,45 @@
 import stadiums from "../stadiums.js";
 
+// Map stadiums to their respective team logos
+const teamLogos = {
+  MIN: "./images/vikings.jpeg",
+  NYG: "./images/giants.jpeg",
+  SF: "./images/49ers.jpeg",
+  HOU: "./images/texans.jpeg",
+  GB: "./images/packers.jpeg",
+  NYJ: "./images/jets.jpeg",
+  DET: "./images/lions.jpeg",
+  LAR: "./images/rams.jpeg",
+  IND: "./images/colts.jpeg",
+  JAX: "./images/jaguars.jpeg",
+  TEN: "./images/titans.jpeg",
+  CHI: "./images/bears.jpeg",
+  ARI: "./images/cardinals.jpeg",
+  ATL: "./images/falcons.jpeg",
+  SEA: "./images/seahawks.jpeg",
+};
+
+const schedule = [
+  { week: 1, home: "NYG", away: "MIN" },
+  { week: 2, home: "MIN", away: "SF" },
+  { week: 3, home: "MIN", away: "HOU" },
+  { week: 4, home: "GB", away: "MIN" },
+  { week: 5, home: "MIN", away: "NYJ" },
+  { week: 6, home: "MIN", away: "MIN" }, //BYE
+  { week: 7, home: "MIN", away: "DET" },
+  { week: 8, home: "LAR", away: "MIN" },
+  { week: 9, home: "MIN", away: "IND" },
+  { week: 10, home: "JAX", away: "MIN" },
+  { week: 11, home: "TEN", away: "MIN" },
+  { week: 12, home: "CHI", away: "MIN" },
+  { week: 13, home: "MIN", away: "ARI" },
+  { week: 14, home: "MIN", away: "ATL" },
+  { week: 15, home: "MIN", away: "CHI" },
+  { week: 16, home: "SEA", away: "MIN" },
+  { week: 17, home: "MIN", away: "GB" },
+  { week: 18, home: "DET", away: "MIN" },
+];
+
 const MinnesotaCoordinates = [
   stadiums.NYG,
   stadiums.MIN,
@@ -31,14 +71,43 @@ function createVikingsFlightPath() {
   });
 }
 
+function updateTeamLogos(weekIndex) {
+  const homeImg = document.getElementById("home-team-img");
+  const awayImg = document.getElementById("away-team-img");
+
+  const currentMatch = schedule[weekIndex];
+  if (!currentMatch) {
+    console.error("No match found for this week");
+    return;
+  }
+
+  const homeTeam = currentMatch.home;
+  const awayTeam = currentMatch.away;
+
+  homeImg.src = teamLogos[homeTeam] || "./images/default_home.jpeg";
+  awayImg.src = teamLogos[awayTeam] || "./images/default_away.jpeg";
+
+  console.log(`Home Image Set To: ${homeImg.src}`);
+  console.log(`Away Image Set To: ${awayImg.src}`);
+}
+
+// Function to update the week display
+function updateWeek(weekIndex) {
+  const weekElement = document.querySelector(".week h2");
+  weekElement.textContent = `Week ${weekIndex + 1}`; // Weeks start from 1
+}
+
 // Function to animate the camera along the flight path
 function vikingsCamera(map, index = 0) {
-  if (index >= MinnesotaCoordinates.length - 1) return;
+  if (index >= MinnesotaCoordinates.length) return;
 
   const start = MinnesotaCoordinates[index];
   const end = MinnesotaCoordinates[index + 1];
-  const totalSteps = 600; // Number of steps for the animation
+  const totalSteps = 300; // Number of steps for the animation
   const stepDuration = 1; // Time per step in milliseconds
+
+  updateTeamLogos(index);
+  updateWeek(index);
 
   let currentStep = 0;
 
@@ -46,7 +115,7 @@ function vikingsCamera(map, index = 0) {
     if (currentStep >= totalSteps) {
       setTimeout(() => {
         vikingsCamera(map, index + 1);
-      }, 500); // Wait before moving to the next point
+      }, 1000); // Wait before moving to the next point
       return;
     }
 
