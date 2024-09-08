@@ -1,5 +1,46 @@
 import stadiums from "../stadiums.js";
 
+// Map stadiums to their respective team logos
+const teamLogos = {
+  ARI: "./images/cardinals.jpeg",
+  BUF: "./images/bills.jpeg",
+  LAR: "./images/rams.jpeg",
+  DET: "./images/lions.jpeg",
+  WSH: "./images/commanders.jpeg",
+  SF: "./images/49ers.jpeg",
+  GB: "./images/packers.jpeg",
+  LAC: "./images/chargers.jpeg",
+  MIA: "./images/dolphins.jpeg",
+  CHI: "./images/bears.jpeg",
+  NYJ: "./images/jets.jpeg",
+  SEA: "./images/seahawks.jpeg",
+  MIN: "./images/vikings.jpeg",
+  NE: "./images/patriots.jpeg",
+  CAR: "./images/panthers.jpeg",
+};
+
+// Define the schedule for each week
+const schedule = [
+  { week: 1, home: "BUF", away: "ARI" },
+  { week: 2, home: "ARI", away: "LAR" },
+  { week: 3, home: "ARI", away: "DET" },
+  { week: 4, home: "ARI", away: "WSH" },
+  { week: 5, home: "SF", away: "ARI" },
+  { week: 6, home: "GB", away: "ARI" },
+  { week: 7, home: "ARI", away: "LAC" },
+  { week: 8, home: "MIA", away: "ARI" },
+  { week: 9, home: "ARI", away: "CHI" },
+  { week: 10, home: "ARI", away: "NYJ" },
+  { week: 11, home: "ARI", away: "ARI" }, //BYE
+  { week: 12, home: "SEA", away: "ARI" },
+  { week: 13, home: "MIN", away: "ARI" },
+  { week: 14, home: "ARI", away: "SEA" },
+  { week: 15, home: "ARI", away: "NE" },
+  { week: 16, home: "CAR", away: "ARI" },
+  { week: 17, home: "LAR", away: "ARI" },
+  { week: 18, home: "ARI", away: "SF" },
+];
+
 const ArizonaCoordinates = [
   stadiums.BUF,
   stadiums.ARI,
@@ -32,14 +73,43 @@ function createCardinalsFlightPath() {
   });
 }
 
+function updateTeamLogos(weekIndex) {
+  const homeImg = document.getElementById("home-team-img");
+  const awayImg = document.getElementById("away-team-img");
+
+  const currentMatch = schedule[weekIndex];
+  if (!currentMatch) {
+    console.error("No match found for this week");
+    return;
+  }
+
+  const homeTeam = currentMatch.home;
+  const awayTeam = currentMatch.away;
+
+  homeImg.src = teamLogos[homeTeam] || "./images/default_home.jpeg";
+  awayImg.src = teamLogos[awayTeam] || "./images/default_away.jpeg";
+
+  console.log(`Home Image Set To: ${homeImg.src}`);
+  console.log(`Away Image Set To: ${awayImg.src}`);
+}
+
+// Function to update the week display
+function updateWeek(weekIndex) {
+  const weekElement = document.querySelector(".week h2");
+  weekElement.textContent = `Week ${weekIndex + 1}`; // Weeks start from 1
+}
+
 // Function to animate the camera along the flight path
 function cardinalsCamera(map, index = 0) {
-  if (index >= ArizonaCoordinates.length - 1) return;
+  if (index >= ArizonaCoordinates.length) return;
 
   const start = ArizonaCoordinates[index];
   const end = ArizonaCoordinates[index + 1];
   const totalSteps = 600; // Number of steps for the animation
   const stepDuration = 1; // Time per step in milliseconds
+
+  updateTeamLogos(index);
+  updateWeek(index);
 
   let currentStep = 0;
 
@@ -47,7 +117,7 @@ function cardinalsCamera(map, index = 0) {
     if (currentStep >= totalSteps) {
       setTimeout(() => {
         cardinalsCamera(map, index + 1);
-      }, 500); // Wait before moving to the next point
+      }, 1000); // Wait before moving to the next point
       return;
     }
 

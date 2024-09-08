@@ -1,5 +1,46 @@
 import stadiums from "../stadiums.js";
 
+// Map stadiums to their respective team logos
+const teamLogos = {
+  IND: "./images/colts.jpeg",
+  HOU: "./images/texans.jpeg",
+  GB: "./images/packers.jpeg",
+  CHI: "./images/bears.jpeg",
+  PIT: "./images/steelers.jpeg",
+  JAX: "./images/jaguars.jpeg",
+  TEN: "./images/titans.jpeg",
+  MIA: "./images/dolphins.jpeg",
+  MIN: "./images/vikings.jpeg",
+  BUF: "./images/bills.jpeg",
+  NYJ: "./images/jets.jpeg",
+  DET: "./images/lions.jpeg",
+  NE: "./images/patriots.jpeg",
+  DEN: "./images/broncos.jpeg",
+  NYG: "./images/giants.jpeg",
+};
+
+// Define the schedule for each week
+const schedule = [
+  { week: 1, home: "IND", away: "HOU" },
+  { week: 2, home: "GB", away: "IND" },
+  { week: 3, home: "IND", away: "CHI" },
+  { week: 4, home: "IND", away: "PIT" },
+  { week: 5, home: "JAX", away: "IND" },
+  { week: 6, home: "TEN", away: "IND" },
+  { week: 7, home: "IND", away: "MIA" },
+  { week: 8, home: "HOU", away: "IND" },
+  { week: 9, home: "MIN", away: "IND" },
+  { week: 10, home: "IND", away: "BUF" },
+  { week: 11, home: "NYJ", away: "IND" },
+  { week: 12, home: "IND", away: "DET" },
+  { week: 13, home: "NE", away: "IND" },
+  { week: 14, home: "IND", away: "IND" }, //BYE
+  { week: 15, home: "DEN", away: "IND" },
+  { week: 16, home: "IND", away: "TEN" },
+  { week: 17, home: "NYG", away: "IND" },
+  { week: 18, home: "IND", away: "JAX" },
+];
+
 const IndianapolisCoordinates = [
   stadiums.IND,
   stadiums.GB,
@@ -31,14 +72,43 @@ function createColtsFlightPath() {
   });
 }
 
+function updateTeamLogos(weekIndex) {
+  const homeImg = document.getElementById("home-team-img");
+  const awayImg = document.getElementById("away-team-img");
+
+  const currentMatch = schedule[weekIndex];
+  if (!currentMatch) {
+    console.error("No match found for this week");
+    return;
+  }
+
+  const homeTeam = currentMatch.home;
+  const awayTeam = currentMatch.away;
+
+  homeImg.src = teamLogos[homeTeam] || "./images/default_home.jpeg";
+  awayImg.src = teamLogos[awayTeam] || "./images/default_away.jpeg";
+
+  console.log(`Home Image Set To: ${homeImg.src}`);
+  console.log(`Away Image Set To: ${awayImg.src}`);
+}
+
+// Function to update the week display
+function updateWeek(weekIndex) {
+  const weekElement = document.querySelector(".week h2");
+  weekElement.textContent = `Week ${weekIndex + 1}`; // Weeks start from 1
+}
+
 // Function to animate the camera along the flight path
 function coltsCamera(map, index = 0) {
-  if (index >= IndianapolisCoordinates.length - 1) return;
+  if (index >= IndianapolisCoordinates.length) return;
 
   const start = IndianapolisCoordinates[index];
   const end = IndianapolisCoordinates[index + 1];
-  const totalSteps = 600; // Number of steps for the animation
+  const totalSteps = 300; // Number of steps for the animation
   const stepDuration = 1; // Time per step in milliseconds
+
+  updateTeamLogos(index);
+  updateWeek(index);
 
   let currentStep = 0;
 
@@ -46,7 +116,7 @@ function coltsCamera(map, index = 0) {
     if (currentStep >= totalSteps) {
       setTimeout(() => {
         coltsCamera(map, index + 1);
-      }, 500); // Wait before moving to the next point
+      }, 1000); // Wait before moving to the next point
       return;
     }
 

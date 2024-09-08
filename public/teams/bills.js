@@ -1,5 +1,44 @@
 import stadiums from "../stadiums.js";
 
+const teamLogos = {
+  BUF: "./images/bills.jpeg",
+  ARI: "./images/cardinals.jpeg",
+  MIA: "./images/dolphins.jpeg",
+  JAX: "./images/jaguars.jpeg",
+  BAL: "./images/ravens.jpeg",
+  HOU: "./images/texans.jpeg",
+  NYJ: "./images/jets.jpeg",
+  TEN: "./images/titans.jpeg",
+  SEA: "./images/seahawks.jpeg",
+  IND: "./images/colts.jpeg",
+  KC: "./images/chiefs.jpeg",
+  SF: "./images/49ers.jpeg",
+  LAR: "./images/rams.jpeg",
+  DET: "./images/lions.jpeg",
+  NE: "./images/patriots.jpeg",
+};
+
+const schedule = [
+  { week: 1, home: "BUF", away: "ARI" },
+  { week: 2, home: "MIA", away: "BUF" },
+  { week: 3, home: "BUF", away: "JAX" },
+  { week: 4, home: "BAL", away: "BUF" },
+  { week: 5, home: "HOU", away: "BUF" },
+  { week: 6, home: "NYJ", away: "BUF" },
+  { week: 7, home: "BUF", away: "TEN" },
+  { week: 8, home: "SEA", away: "BUF" },
+  { week: 9, home: "BUF", away: "MIA" },
+  { week: 10, home: "IND", away: "BUF" },
+  { week: 11, home: "BUF", away: "KC" },
+  { week: 12, home: "BUF", away: "BUF" }, //BYE
+  { week: 13, home: "BUF", away: "SF" },
+  { week: 14, home: "LAR", away: "BUF" },
+  { week: 15, home: "DET", away: "BUF" },
+  { week: 16, home: "BUF", away: "NE" },
+  { week: 17, home: "BUF", away: "NYJ" },
+  { week: 18, home: "NE", away: "BUF" },
+];
+
 const BuffaloCoordinates = [
   stadiums.BUF,
   stadiums.MIA,
@@ -31,14 +70,43 @@ function createBillsFlightPath() {
   });
 }
 
+function updateTeamLogos(weekIndex) {
+  const homeImg = document.getElementById("home-team-img");
+  const awayImg = document.getElementById("away-team-img");
+
+  const currentMatch = schedule[weekIndex];
+  if (!currentMatch) {
+    console.error("No match found for this week");
+    return;
+  }
+
+  const homeTeam = currentMatch.home;
+  const awayTeam = currentMatch.away;
+
+  homeImg.src = teamLogos[homeTeam] || "./images/default_home.jpg";
+  awayImg.src = teamLogos[awayTeam] || "./images/default_away.jpg";
+
+  console.log(`Home Image Set To: ${homeImg.src}`);
+  console.log(`Away Image Set To: ${awayImg.src}`);
+}
+
+// Function to update the week display
+function updateWeek(weekIndex) {
+  const weekElement = document.querySelector(".week h2");
+  weekElement.textContent = `Week ${weekIndex + 1}`; // Weeks start from 1
+}
+
 // Function to animate the camera along the flight path
 function billsCamera(map, index = 0) {
-  if (index >= BuffaloCoordinates.length - 1) return;
+  if (index >= BuffaloCoordinates.length) return;
 
   const start = BuffaloCoordinates[index];
   const end = BuffaloCoordinates[index + 1];
-  const totalSteps = 600; // Number of steps for the animation
+  const totalSteps = 300; // Number of steps for the animation
   const stepDuration = 1; // Time per step in milliseconds
+
+  updateTeamLogos(index);
+  updateWeek(index);
 
   let currentStep = 0;
 
@@ -46,7 +114,7 @@ function billsCamera(map, index = 0) {
     if (currentStep >= totalSteps) {
       setTimeout(() => {
         billsCamera(map, index + 1);
-      }, 500); // Wait before moving to the next point
+      }, 1000); // Wait before moving to the next point
       return;
     }
 

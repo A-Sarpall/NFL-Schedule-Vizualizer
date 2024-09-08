@@ -44,8 +44,6 @@ import {
   commandersCamera,
 } from "./teams/commanders.js";
 
-console.log(stadiums);
-
 function loadGoogleMaps() {
   const apiKey = "AIzaSyDIGk3VO9K19xgxwV38DdP5AeJrAklNeBc"; // Replace with your actual API key
   const script = document.createElement("script");
