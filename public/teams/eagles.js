@@ -23,7 +23,7 @@ const schedule = [
   { week: 1, home: "PHI", away: "GB" },
   { week: 2, home: "PHI", away: "ATL" },
   { week: 3, home: "NO", away: "PHI" },
-  { week: 4, home: "PHI", away: "TB" },
+  { week: 4, home: "TB", away: "PHI" },
   { week: 5, home: "PHI", away: "PHI" }, //BYE
   { week: 6, home: "PHI", away: "CLE" },
   { week: 7, home: "NYG", away: "PHI" },
