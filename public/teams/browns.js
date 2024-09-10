@@ -60,6 +60,9 @@ const ClevelandCoordinates = [
   stadiums.BAL,
 ];
 
+let animationFrameId = null;
+let isAnimating = false;
+
 function createBrownsFlightPath() {
   return new google.maps.Polyline({
     path: ClevelandCoordinates,
@@ -99,13 +102,42 @@ function updateWeek(weekIndex) {
 
 // Function to animate the camera along the flight path
 function brownsCamera(map, index = 0) {
-  if (index >= ClevelandCoordinates.length) return;
+  const teamSelect = document.getElementById("team-select");
+
+  // Disable the dropdown menu before the animation starts
+  teamSelect.disabled = true;
+
+  // Check if we have finished the entire flight path
+  if (index >= ClevelandCoordinates.length - 1) {
+    // Update for the final week
+    updateTeamLogos(ClevelandCoordinates.length - 1);
+    updateWeek(ClevelandCoordinates.length - 1);
+
+    // Re-enable the dropdown menu when the animation is complete
+    teamSelect.disabled = false;
+    return;
+  }
+
+  if (isAnimating) {
+    cancelAnimationFrame(animationFrameId);
+    isAnimating = false;
+  }
 
   const start = ClevelandCoordinates[index];
   const end = ClevelandCoordinates[index + 1];
-  const totalSteps = 300; // Number of steps for the animation
-  const stepDuration = 1; // Time per step in milliseconds
 
+  // Check if 'start' and 'end' are defined
+  if (!start || !end) {
+    console.error(
+      `Invalid coordinates at index ${index}. Start or end coordinate is undefined.`
+    );
+    teamSelect.disabled = false; // Re-enable dropdown even if an error occurs
+    return;
+  }
+
+  const totalSteps = 100; // Number of steps for the animation
+
+  // Update team logos and the week based on the current index (week)
   updateTeamLogos(index);
   updateWeek(index);
 
@@ -113,6 +145,7 @@ function brownsCamera(map, index = 0) {
 
   function moveCamera() {
     if (currentStep >= totalSteps) {
+      // Move to the next segment after the current one finishes
       setTimeout(() => {
         brownsCamera(map, index + 1);
       }, 1000); // Wait before moving to the next point
@@ -126,7 +159,8 @@ function brownsCamera(map, index = 0) {
     map.setZoom(7); // Adjust the zoom level as needed
 
     currentStep++;
-    setTimeout(moveCamera, stepDuration);
+    animationFrameId = requestAnimationFrame(moveCamera);
+    isAnimating = true;
   }
 
   moveCamera();

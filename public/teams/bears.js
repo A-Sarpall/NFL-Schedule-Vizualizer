@@ -109,7 +109,21 @@ function updateWeek(weekIndex) {
 
 // Function to animate the camera along the flight path and update logos
 function bearsCamera(map, index = 0) {
-  if (index >= ChicagoCoordinates.length) return;
+  const teamSelect = document.getElementById("team-select");
+
+  // Disable the dropdown menu before the animation starts
+  teamSelect.disabled = true;
+
+  // Check if we have finished the entire flight path
+  if (index >= ChicagoCoordinates.length - 1) {
+    // Update for the final week
+    updateTeamLogos(ChicagoCoordinates.length - 1);
+    updateWeek(ChicagoCoordinates.length - 1);
+
+    // Re-enable the dropdown menu when the animation is complete
+    teamSelect.disabled = false;
+    return;
+  }
 
   if (isAnimating) {
     cancelAnimationFrame(animationFrameId);
@@ -118,8 +132,17 @@ function bearsCamera(map, index = 0) {
 
   const start = ChicagoCoordinates[index];
   const end = ChicagoCoordinates[index + 1];
-  const totalSteps = 300; // Number of steps for the animation
-  const stepDuration = 1; // Time per step in milliseconds
+
+  // Check if 'start' and 'end' are defined
+  if (!start || !end) {
+    console.error(
+      `Invalid coordinates at index ${index}. Start or end coordinate is undefined.`
+    );
+    teamSelect.disabled = false; // Re-enable dropdown even if an error occurs
+    return;
+  }
+
+  const totalSteps = 100; // Number of steps for the animation
 
   // Update team logos and the week based on the current index (week)
   updateTeamLogos(index);
@@ -129,6 +152,7 @@ function bearsCamera(map, index = 0) {
 
   function moveCamera() {
     if (currentStep >= totalSteps) {
+      // Move to the next segment after the current one finishes
       setTimeout(() => {
         bearsCamera(map, index + 1);
       }, 1000); // Wait before moving to the next point
